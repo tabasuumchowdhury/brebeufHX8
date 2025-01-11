@@ -58,9 +58,9 @@ const Index = () => {
           <CategoryQuestion
             question="What is your gender?"
             options={[
-              { id: "male", label: "Male" },
-              { id: "female", label: "Female" }
-            ]}
+              { id: "male", picture: "/images/male.png" },
+              { id: "female", picture: "/images/female.png" }
+            ]}            
             onAnswer={handleAnswer}
             selected={answers.gender}
           />

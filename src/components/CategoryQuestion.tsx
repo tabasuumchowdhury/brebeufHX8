@@ -3,7 +3,8 @@ import { cn } from "@/lib/utils";
 
 interface CategoryOption {
   id: string;
-  label: string;
+  label?: string;
+  picture?: string;
   icon?: string;
 }
 
@@ -24,7 +25,7 @@ export const CategoryQuestion = ({
     <div className="flex flex-col items-center gap-8 w-full max-w-3xl mx-auto">
       <h2 className="text-2xl font-semibold text-slate-800">{question}</h2>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         {options.map((option) => (
           <button
             key={option.id}
@@ -42,9 +43,11 @@ export const CategoryQuestion = ({
                 <Check className="w-5 h-5 text-indigo-500" />
               </div>
             )}
-            {option.icon && (
-              <img src={option.icon} alt="" className="w-16 h-16 object-contain" />
-            )}
+            {option.picture ? (
+              <img src={option.picture} alt={option.label} className="w-16 h-16 object-contain" />
+            ) : option.icon ? (
+              <img src={option.icon} alt={option.label} className="w-16 h-16 object-contain" />
+            ) : null}
             <span className="text-lg font-medium text-slate-700">
               {option.label}
             </span>

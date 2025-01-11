@@ -11,7 +11,7 @@ interface SliderQuestionProps {
 export const SliderQuestion = ({
   question,
   onAnswer,
-  initialValue = 50,
+  initialValue = 5,
 }: SliderQuestionProps) => {
   const [value, setValue] = useState([initialValue]);
 
@@ -23,15 +23,15 @@ export const SliderQuestion = ({
         <Slider
           value={value}
           onValueChange={setValue}
-          max={100}
+          max={10}
           step={1}
           className="w-full"
         />
         
         <div className="flex justify-between text-sm text-slate-500">
           <span>0</span>
-          <span>50</span>
-          <span>100</span>
+          <span>5</span>
+          <span>10</span>
         </div>
         
         <div className="text-center">
