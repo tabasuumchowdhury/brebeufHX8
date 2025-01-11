@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { CategoryQuestion } from "@/components/CategoryQuestion";
 import { SliderQuestion } from "@/components/SliderQuestion";
-import { StudentForm } from "@/components/StudentForm";
 import { StudyPath } from "@/components/StudyPath";
 
 type QuestionStep = 
   | "gender"
+  | "ethnic-group"
   | "parent-education"
   | "lunch-type"
   | "test-prep"
-  | "parental-involvement"
-  | "study-hours"
-  | "previous-grade"
+  | "marital-status"
+  | "sports"
+  | "siblings"
   | "results";
 
 const Index = () => {
@@ -25,6 +25,9 @@ const Index = () => {
     // Move to next question based on current step
     switch (currentStep) {
       case "gender":
+        setCurrentStep("ethnic-group");
+        break;
+      case "ethnic-group":
         setCurrentStep("parent-education");
         break;
       case "parent-education":
@@ -34,15 +37,15 @@ const Index = () => {
         setCurrentStep("test-prep");
         break;
       case "test-prep":
-        setCurrentStep("parental-involvement");
+        setCurrentStep("marital-status");
         break;
-      case "parental-involvement":
-        setCurrentStep("study-hours");
+      case "marital-status":
+        setCurrentStep("sports");
         break;
-      case "study-hours":
-        setCurrentStep("previous-grade");
+      case "sports":
+        setCurrentStep("siblings");
         break;
-      case "previous-grade":
+      case "siblings":
         setCurrentStep("results");
         break;
     }
@@ -60,6 +63,22 @@ const Index = () => {
             ]}
             onAnswer={handleAnswer}
             selected={answers.gender}
+          />
+        );
+
+      case "ethnic-group":
+        return (
+          <CategoryQuestion
+            question="What is your ethnic group?"
+            options={[
+              { id: "group_a", label: "Group A" },
+              { id: "group_b", label: "Group B" },
+              { id: "group_c", label: "Group C" },
+              { id: "group_d", label: "Group D" },
+              { id: "group_e", label: "Group E" }
+            ]}
+            onAnswer={handleAnswer}
+            selected={answers["ethnic-group"]}
           />
         );
 
@@ -106,30 +125,40 @@ const Index = () => {
           />
         );
 
-      case "parental-involvement":
+      case "marital-status":
         return (
-          <SliderQuestion
-            question="How would you rate your parents' involvement in your education? (0-100)"
+          <CategoryQuestion
+            question="What is your parents' marital status?"
+            options={[
+              { id: "married", label: "Married" },
+              { id: "divorced", label: "Divorced" },
+              { id: "separated", label: "Separated" },
+              { id: "single", label: "Single" }
+            ]}
             onAnswer={handleAnswer}
-            initialValue={answers["parental-involvement"]}
+            selected={answers["marital-status"]}
           />
         );
 
-      case "study-hours":
+      case "sports":
         return (
-          <SliderQuestion
-            question="How many hours do you study per week? (0-100)"
+          <CategoryQuestion
+            question="Do you practice any sports?"
+            options={[
+              { id: "yes", label: "Yes" },
+              { id: "no", label: "No" }
+            ]}
             onAnswer={handleAnswer}
-            initialValue={answers["study-hours"]}
+            selected={answers.sports}
           />
         );
 
-      case "previous-grade":
+      case "siblings":
         return (
           <SliderQuestion
-            question="What was your previous grade? (0-100)"
+            question="How many siblings do you have?"
             onAnswer={handleAnswer}
-            initialValue={answers["previous-grade"]}
+            initialValue={answers.siblings || 0}
           />
         );
 
