@@ -71,11 +71,11 @@ const Index = () => {
           <CategoryQuestion
             question="What is your ethnic group?"
             options={[
-              { id: "group_a", label: "Group A" },
-              { id: "group_b", label: "Group B" },
-              { id: "group_c", label: "Group C" },
-              { id: "group_d", label: "Group D" },
-              { id: "group_e", label: "Group E" }
+              { id: "african", label: "African" },
+              { id: "asian", label: "Asian" },
+              { id: "north_american", label: "North American" },
+              { id: "european", label: "European" },
+              { id: "south_american", label: "South American" }
             ]}
             onAnswer={handleAnswer}
             selected={answers["ethnic-group"]}
