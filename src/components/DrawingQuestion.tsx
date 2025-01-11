@@ -10,46 +10,56 @@ interface DrawingQuestionProps {
 
 export const DrawingQuestion = ({ question, onAnswer }: DrawingQuestionProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
+  const fabricCanvasRef = useRef<FabricCanvas | null>(null);
   const [isDrawing, setIsDrawing] = useState(true);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const canvas = new FabricCanvas(canvasRef.current, {
+    // Create new canvas instance
+    const canvas = new FabricCanvas(canvasRef.current);
+    
+    // Set initial canvas properties
+    canvas.setDimensions({
       width: 600,
-      height: 400,
-      backgroundColor: "#ffffff",
-      isDrawingMode: true,
+      height: 400
     });
-
+    
+    canvas.backgroundColor = "#ffffff";
+    canvas.isDrawingMode = true;
     canvas.freeDrawingBrush.width = 2;
     canvas.freeDrawingBrush.color = "#000000";
-    setFabricCanvas(canvas);
+    
+    // Store canvas reference
+    fabricCanvasRef.current = canvas;
 
+    // Cleanup function
     return () => {
-      canvas.dispose();
+      if (fabricCanvasRef.current) {
+        fabricCanvasRef.current.dispose();
+        fabricCanvasRef.current = null;
+      }
     };
   }, []);
 
   const toggleEraser = () => {
-    if (!fabricCanvas) return;
+    if (!fabricCanvasRef.current) return;
     setIsDrawing(!isDrawing);
-    fabricCanvas.freeDrawingBrush.color = isDrawing ? "#ffffff" : "#000000";
-    fabricCanvas.freeDrawingBrush.width = isDrawing ? 20 : 2;
+    fabricCanvasRef.current.freeDrawingBrush.color = isDrawing ? "#ffffff" : "#000000";
+    fabricCanvasRef.current.freeDrawingBrush.width = isDrawing ? 20 : 2;
   };
 
   const handleSubmit = () => {
-    if (!fabricCanvas) return;
-    const dataUrl = fabricCanvas.toDataURL();
+    if (!fabricCanvasRef.current) return;
+    const dataUrl = fabricCanvasRef.current.toDataURL();
     onAnswer(dataUrl);
   };
 
   const handleClear = () => {
-    if (!fabricCanvas) return;
-    fabricCanvas.clear();
-    fabricCanvas.backgroundColor = "#ffffff";
-    fabricCanvas.renderAll();
+    if (!fabricCanvasRef.current) return;
+    fabricCanvasRef.current.clear();
+    fabricCanvasRef.current.backgroundColor = "#ffffff";
+    fabricCanvasRef.current.renderAll();
   };
 
   return (
@@ -57,7 +67,7 @@ export const DrawingQuestion = ({ question, onAnswer }: DrawingQuestionProps) =>
       <h2 className="text-2xl font-semibold text-slate-800">{question}</h2>
       
       <div className="border border-slate-200 rounded-lg shadow-lg overflow-hidden">
-        <canvas ref={canvasRef} className="max-w-full" />
+        <canvas ref={canvasRef} />
       </div>
       
       <div className="flex gap-4">
